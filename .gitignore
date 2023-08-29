@@ -1,0 +1,4 @@
+projenv/
+migrations/
+media/
+db.sqlite3

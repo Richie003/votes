@@ -1,0 +1,431 @@
+{%extends 'base.html' %} {%block links%}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css"
+  integrity="sha512-PT0RvABaDhDQugEbpNMwgYBCnGCiTZMh9yOzUsJHDgl/dMhD9yjHAwoumnUk3JydV3QTcIkNDuN40CJxik5+WQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+{%endblock links%} {%block title%}Dashboard{%endblock title%} {%block contents%}
+<div class="container px-4 py-4 mt-4">
+  <div class="card shadow mb-4">
+    <div
+      class="d-flex align-items-center justify-content-between card-header py-3"
+    >
+      <h6 class="m-0 font-weight-bold text-dark fw-bolder fs-3">
+        Polls <i class="icon cart text-dark"></i>
+      </h6>
+      <!-- <h6 class="text-dark"><span class="fw-bolder">Total: </span>N{{total}}</h6> -->
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          class="table table-bordered"
+          id="dataTable"
+          width="100%"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th>Candidate Name</th>
+              <th>Role</th>
+              <th>Department</th>
+              <th>Vote Count</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Candidate Name</th>
+              <th>Role</th>
+              <th>Department</th>
+              <th>Vote Count</th>
+              <th>Action</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {%for data in dataset%}
+            <tr>
+              <td>{{data.candidate_name}}</td>
+              <td>{{data.role}}</td>
+              <td>{{data.bio.department}}</td>
+              <td>{{data.get_vote_count}}</td>
+              <td class="action">
+                <button
+                  class="btn btn-sm btn-danger m-1"
+                  onclick="removeData(`{{data.id}}`)"
+                  data-bs-toggle="modal" data-bs-target="#removeModal"
+                >
+                  <i class="bi bi-x-circle-fill"></i>
+                </button>
+              </td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Create User Form Modal  -->
+<div
+  class="modal fade"
+  id="registrationModal"
+  tabindex="-1"
+  aria-labelledby="registrationModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registrationModalLabel">
+          Create a new user
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Registration Form -->
+        <form method="POST" id="usercreationForm">
+          {%csrf_token%}
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="registration_number" class="form-label"
+              >Registration Number</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="registration_number"
+              name="registration_number"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="firstname" class="form-label">First Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="firstname"
+              name="firstname"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="lastname" class="form-label">Last Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="lastname"
+              name="lastname"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="confirm_password" class="form-label"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              class="form-control"
+              id="confirm_password"
+              name="confirm_password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary" id="create-btn">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Add Candidate Form Modal  -->
+<div
+  class="modal fade"
+  id="candidateModal"
+  tabindex="-1"
+  aria-labelledby="candidateModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="candidateModalLabel">
+          Add a candidate
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="addcandidateForm" enctype="multipart/form-data">
+          {%csrf_token%}
+          <div class="mb-3">
+            <label for="email" class="form-label">{{form.label}}</label>
+            {{form.as_p}}
+          </div>
+          <button type="submit" class="btn btn-primary">Add Candidate</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Create Role Form Modal  -->
+<div
+  class="modal fade"
+  id="roleModal"
+  tabindex="-1"
+  aria-labelledby="roleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="roleModalLabel">
+          Create a role students can contest for
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="roleForm">
+          {%csrf_token%}
+          <div class="mb-3">
+            <label for="email" class="form-label">Role</label>
+            <input type="text" name="role" id="id_role" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Create Role Form Modal  -->
+<div
+  class="modal fade"
+  id="removeModal"
+  tabindex="-1"
+  aria-labelledby="removeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="removeModalLabel">
+          Are you sure you want to Remove this Candidate?
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="POST">
+          {%csrf_token%}
+          <input type="hidden" name="remove-candidate">
+          <button type="submit" class="btn btn-danger" id="remove-btn">Yes I'm sure</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock contents%} {%block scripts%}
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"
+  integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap.min.js"
+  integrity="sha512-F0E+jKGaUC90odiinxkfeS3zm9uUT1/lpusNtgXboaMdA3QFMUez0pBmAeXGXtGxoGZg3bLmrkSkbK1quua4/Q=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script>
+  $(document).ready(function () {
+    $("#dataTable").DataTable();
+    $("input[id=email]").val("example@example.com");
+    // ---- Create User form Post request ----- //
+    $('#confirm_password').on('keyup', ()=>{
+        if($('#password').val() != $('#confirm_password').val()){
+            $('#create-btn').attr('disabled', true)
+            $('#create-btn').removeClass('btn-primary')
+            $('#create-btn').addClass('btn-secondary')
+        }else{
+            $('#create-btn').addClass('btn-primary')
+            $('#create-btn').attr('disabled', false)
+            $('#create-btn').removeClass('btn-secondary')
+        }
+    })
+    $("#usercreationForm").submit(function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Serialize form data
+      var formData = new FormData(this);
+
+      // Send POST request to Django backend
+      $.ajax({
+        type: "POST",
+        url: "{%url 'createuser' %}",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          $('input').val('');
+          var currentDate = new Date();
+
+            // Format the date and time
+            var Dateformat = currentDate.toLocaleDateString();
+            var Timeformat = currentDate.toLocaleTimeString();
+          if(response.response){
+          $('body').append(
+            `
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                <i class="bi bi-check-lg me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <small>${Dateformat} ${Timeformat}</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                ${response.response}
+                </div>
+            </div>
+            </div>
+            `
+          )
+          }else if(response.negative){
+            $('body').append(
+            `
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                <i class="bi bi-cancel-lg me-2"></i>
+                <strong class="me-auto">Unsuccessful</strong>
+                <small>${Dateformat} ${Timeformat}</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                ${response.negative}
+                </div>
+            </div>
+            </div>
+            `
+          )
+          }
+          $('#registrationModal').modal('hide');
+          $('.toast').toast('show');
+        },
+        error: function (error) {
+          console.log("Registration failed:", error);
+        },
+      });
+    });
+    // Create Role form
+    $("#roleForm").submit(function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Serialize form data
+      var formData = new FormData(this);
+
+      // Send POST request to Django backend
+      $.ajax({
+        type: "POST",
+        url: "{%url 'createrole' %}",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          $('input').val('');
+          var currentDate = new Date();
+
+            // Format the date and time
+            var Dateformat = currentDate.toLocaleDateString();
+            var Timeformat = currentDate.toLocaleTimeString();
+            if(response.response){
+            $('body').append(
+              `
+              <div class="toast-container position-fixed bottom-0 end-0 p-3">
+              <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                  <div class="toast-header">
+                  <i class="bi bi-check-lg me-2"></i>
+                  <strong class="me-auto">Success</strong>
+                  <small>${Dateformat} ${Timeformat}</small>
+                  <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+                  <div class="toast-body">
+                  ${response.response}
+                  </div>
+              </div>
+              </div>
+              `
+            )
+            }else if(response.negative){
+              $('body').append(
+              `
+              <div class="toast-container position-fixed bottom-0 end-0 p-3">
+              <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                  <div class="toast-header">
+                  <i class="bi bi-cancel-lg me-2"></i>
+                  <strong class="me-auto">Unsuccessful</strong>
+                  <small>${Dateformat} ${Timeformat}</small>
+                  <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+                  <div class="toast-body">
+                  ${response.negative}
+                  </div>
+              </div>
+              </div>
+              `
+            )
+            }
+          $('#roleModal').modal('hide');
+          $('.toast').toast('show');
+        },
+        error: function (error) {
+          console.log("Something went wrong:", error);
+        },
+      });
+    });
+    // 
+  });
+
+  function removeData(ID){
+      $('input[name=remove-candidate]').attr('value', ID);
+  }
+</script>
+{%endblock scripts%}

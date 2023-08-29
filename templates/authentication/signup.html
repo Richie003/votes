@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
+      integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Get Registered</title>
+  </head>
+  <body>
+    <div class="container my-5">
+      <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center shadow-lg rounded-3">
+        <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+          <h1 class="display-4 fw-bold lh-1 mb-5 text-secondary">Register</h1>
+          <main class="form-signin">
+            <form method="POST" action="" autocomplete="off">
+                {%csrf_token%}
+              <div class="form-floating my-2">
+                {{form.email}}
+                <label for="id_email">Email</label>
+              </div>
+              <!--  -->
+              <div class="form-floating my-2">
+                {{form.reg_no}}
+                <label for="id_reg_no">Registration Number</label>
+              </div>
+              <!--  -->
+              <div class="form-floating my-2">
+                {{form.first_name}}
+                <label for="id_first_name">FirstName</label>
+              </div>
+              <!--  -->
+              <div class="form-floating my-2">
+                {{form.last_name}}
+                <label for="id_last_name">LastName</label>
+              </div>
+              <!--  -->
+              <div class="form-floating my-2">
+                {{form.password1}}
+                <label for="id_password1">Password</label>
+              </div>
+              <!--  -->
+              <div class="form-floating my-2">
+                {{form.password2}}
+                <label for="id_password2">Confirm Password</label>
+              </div>
+              <hr />
+              <button
+                class="w-100 btn btn-lg btn-outline-secondary display-5"
+                type="submit"
+              >
+                Register
+              </button>
+              <p class="mt-5 mb-3 text-muted">Already Registered? <a href="{%url 'login' %}">login here</a></p>
+            </form>
+          </main>
+        </div>
+        <div
+          class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg d-none d-lg-block"
+        >
+          <img
+            class="rounded-lg-3"
+            src="{% static 'assets/uniben-logo1.png' %}"
+            alt=""
+            width="720"
+          />
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+      integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      $("input").addClass("form-control");
+      $("input[id=id_email]").val('example@example.com');
+    </script>
+  </body>
+</html>
