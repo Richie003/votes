@@ -6,7 +6,7 @@ This repository contains the source code for the **Students Voting App** project
 
 ## Getting Started
 
-These instructions will help you set up the project on your local machine. Also, download python(version 3.5 or above) on your local machine here's a link [https://python.org/](https://www.python.org/downloads/)
+These instructions will help you set up the project on your local machine. Also, download python(version 3.5 or above) on your local machine here's a link https://www.python.org/downloads/
 
 ### Prerequisites
 
