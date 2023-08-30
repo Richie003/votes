@@ -4,7 +4,7 @@ from .models import User, UserBio
 from django.contrib.auth.forms import AuthenticationForm
 
 class CustomAuthenticationForm(AuthenticationForm):
-    username = forms.CharField(max_length=254, label='Reg. No.')
+    username = forms.CharField(max_length=254, label='Matriculation Number')
 
 
 
