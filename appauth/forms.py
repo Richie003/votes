@@ -1,6 +1,11 @@
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, UserCreationForm
 from django import forms
 from .models import User, UserBio
+from django.contrib.auth.forms import AuthenticationForm
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(max_length=254, label='Reg. No.')
+
 
 
 class RegisterForm(forms.ModelForm):

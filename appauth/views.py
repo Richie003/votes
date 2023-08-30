@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, UserBioForm
 from django.contrib.auth import authenticate, login, logout
+from .forms import CustomAuthenticationForm
 from django.http import HttpResponse, JsonResponse
 from .models import UserBio
 
@@ -18,13 +19,12 @@ def signup(request):
     }
     return render(request, 'authentication/signup.html', context)
 
+
 def signin(request):
     if request.method == "POST":
-        reg_no = request.POST.get('reg_num')
-        password = request.POST.get('password')
-        user = authenticate(request, reg_no=reg_no, password=password)
-
-        if user is not None:
+        form = CustomAuthenticationForm(request, request.POST)
+        if form.is_valid():
+            user = form.get_user()
             login(request, user)
             if "next" in request.POST:
                 return redirect(request.POST.get("next"))
@@ -37,8 +37,10 @@ def signin(request):
                         return redirect('createbio')
         else:
             return HttpResponse('An error occurred :(\nTry signing in again <a href="/auths/login/">here</a>')
-    context = {}
-    return render(request, 'authentication/signin.html', context)
+    else:
+        form = CustomAuthenticationForm()  # Create an instance of the custom form
+        context = {'form': form}
+        return render(request, 'authentication/signin.html', context)
 
 def signout(request):
     logout(request)

@@ -26,13 +26,13 @@
             <form method="POST" action="" autocomplete="off">
                 {%csrf_token%}
               <div class="form-floating my-2">
-                <input type="text" name="reg_num" id="reg_no">
-                <label for="reg_num">Registration Number</label>
+                {{ form.username }}
+                <label for="reg_num">{{ form.username.label_tag }}</label>
               </div>
               <!--  -->
               <div class="form-floating my-2">
-                <input type="password" name="password" id="password">
-                <label for="password">Password</label>
+                {{ form.password }}
+                <label for="password">{{ form.password.label_tag}}</label>
               </div>
               <hr />
               <button
