@@ -1,0 +1,12 @@
+{% extends "admin/login.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+  <form method="post" class="login-form">
+    {% csrf_token %}
+    {{ form.username.label_tag }} {{ form.username }}
+    {{ form.password.label_tag }} {{ form.password }}
+    <button type="submit">Log in</button>
+  </form>
+{% endblock %}

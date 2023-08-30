@@ -2,11 +2,11 @@
 
 Welcome to the **Students Voting App** repository!
 
-This repository contains the source code for the **Students Voting App** project built using Django version 4.0. It includes instructions on how to create a virtual environment, set up Django, and install all the necessary dependencies using a `requirements.txt` file.
+This repository contains the source code for the **Students Voting App** project built using Django version 4.0. It includes instructions on creating a virtual environment, setting up Django, and installing all the necessary dependencies using a `requirements.txt` file.
 
 ## Getting Started
 
-These instructions will help you set up the project on your local machine. Also download python(version 3.5 or above) on your local machine here's a link https://python.org/
+These instructions will help you set up the project on your local machine. Also, download python(version 3.5 or above) on your local machine here's a link https://www.python.org/downloads/
 
 ### Prerequisites
 
@@ -79,4 +79,3 @@ These instructions will help you set up the project on your local machine. Also 
 If you encounter issues during the setup process just hit me up on whatsapp +2348066600208 ;)
 
 ---
-

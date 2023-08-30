@@ -72,6 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'root.wsgi.application'
+AUTHENTICATION_BACKENDS = ['appauth.backends.CustomBackend']
 
 
 # Database

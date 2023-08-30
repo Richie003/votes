@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.views import LoginView
+from forms.admin import CustomAuthenticationForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
@@ -40,6 +42,13 @@ class FacultyAdmin(admin.ModelAdmin):
     list_display = [
         'faculty_name',
     ]
+
+class CustomLoginView(LoginView):
+    authentication_form = CustomAuthenticationForm
+    template_name = 'admin/login.html'  # You can customize the template path if needed
+
+admin.site.login = CustomLoginView.as_view()
+
 
 class UserBioAdmin(admin.ModelAdmin):
     list_display = [
